@@ -51,3 +51,7 @@
      dzil build;
      dzil test;
      sudo dzil install;
+
+### test english stopwords
+
+     stopWordByLang en
