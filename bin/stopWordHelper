@@ -1,0 +1,74 @@
+#!/bin/bash
+
+lang=$(echo "$1");
+
+
+name=$(echo $0 | sed -s "s/^.*.\///");
+
+if echo $lang | egrep '(da|nl|en|fi|fr|de|hu|it|no|pt|es|sv|ru)' > /dev/null;
+then
+stop=$(perl -MEncode -M"Lingua::StopWords qw( getStopWords );" \
+            -MJSON -le "use Lingua::StopWords;\
+            my \$stopwords = getStopWords('"$lang"');
+            my @k = keys %\$stopwords; \
+            print encode('UTF-8',join '|',@k);");
+echo -e "$stop"
+
+else
+
+
+help=$(cat <<EOF
+
+\e[00;36m
+....................................................................................................................................
+\e[00m
+
+  \e[00;31mavailable languages\e[00m:
+
+\e[00;36m
+     |-----------------------------------------------------------|
+     | \e[00;33mLanguage\e[00m   | \e[00;33mISO code\e[00m | \e[00;33mdefault encoding\e[00m | \e[00;33malso available\e[00m\e[00;36m |
+     |-----------------------------------------------------------|
+     | \e[00;35m Danish\e[00m    | da       | ISO-8859-1       | UTF-8          |
+     | \e[00;35m Dutch\e[00m     | nl       | ISO-8859-1       | UTF-8          |
+     | \e[00;35m English\e[00m   | en       | ISO-8859-1       | UTF-8          |
+     | \e[00;35m Finnish\e[00m   | fi       | ISO-8859-1       | UTF-8          |
+     | \e[00;35m French\e[00m    | fr       | ISO-8859-1       | UTF-8          |
+     | \e[00;35m German\e[00m    | de       | ISO-8859-1       | UTF-8          |
+     | \e[00;35m Hungarian\e[00m | hu       | ISO-8859-1       | UTF-8          |
+     | \e[00;35m Italian\e[00m   | it       | ISO-8859-1       | UTF-8          |
+     | \e[00;35m Norwegian\e[00m | no       | ISO-8859-1       | UTF-8          |
+     | \e[00;35m Portuguese\e[00m| pt       | ISO-8859-1       | UTF-8          |
+     | \e[00;35m Spanish\e[00m   | es       | ISO-8859-1       | UTF-8          |
+     | \e[00;35m Swedish\e[00m   | sv       | ISO-8859-1       | UTF-8          |
+     | \e[00;35m Russian\e[00m   | ru       | KOI8-R           | UTF-8          |
+     |-----------------------------------------------------------|
+
+
+  \e[00;31mrun like\e[00m:
+    $USER@$HOSTNAME:\e[00;33m./$name da \e[00m
+    $USER@$HOSTNAME:\e[00;33m./$name nl \e[00m
+    $USER@$HOSTNAME:\e[00;33m./$name en \e[00m
+    $USER@$HOSTNAME:\e[00;33m./$name fi \e[00m
+    $USER@$HOSTNAME:\e[00;33m./$name fr \e[00m
+    $USER@$HOSTNAME:\e[00;33m./$name de \e[00m
+    $USER@$HOSTNAME:\e[00;33m./$name hu \e[00m
+    $USER@$HOSTNAME:\e[00;33m./$name it \e[00m
+    $USER@$HOSTNAME:\e[00;33m./$name no \e[00m
+    $USER@$HOSTNAME:\e[00;33m./$name pt \e[00m
+    $USER@$HOSTNAME:\e[00;33m./$name es \e[00m
+    $USER@$HOSTNAME:\e[00;33m./$name sv \e[00m
+    $USER@$HOSTNAME:\e[00;33m./$name ru \e[00m
+
+\e[00m
+
+\e[00;36m
+....................................................................................................................................
+\e[00m
+
+EOF
+);
+
+
+echo -e "$help";
+fi
